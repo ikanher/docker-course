@@ -242,7 +242,6 @@ services:
             - vol:/mydir
         container_name: backend
         environment:
-            - DEBUG=express:*
             - REDIS=redis
             - DB_USERNAME=webpack-app
             - DB_PASSWORD=webpack-app
