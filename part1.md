@@ -1,4 +1,4 @@
-# Part 1 Excercices
+# Part 1 - Excercises 1.1-1.8
 
 ## 1.1
 
@@ -13,9 +13,9 @@ f473c6e43b79        nginx               "nginx -g 'daemon of…"   21 seconds ag
 ## 1.2
 
 ```bash
-akir@mindfields:~/school/docker$ docker ps -a
+$ docker ps -a
 CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS               NAMES
-akir@mindfields:~/school/docker$ docker images
+$ docker images
 REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE
 ```
 

@@ -1,4 +1,4 @@
-# Part 3 Excercices
+# Part 3 - Excercises 3.1-3.5 and 3.7a
 
 ## 3.1
 

@@ -1,4 +1,4 @@
-# Part 2 Excercices
+# Part 2 - Excercices 2.1-2.6
 
 ## 2.1
 
