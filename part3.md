@@ -224,3 +224,59 @@ USER app
 CMD ["gunicorn", "--preload", "--bind", "0.0.0.0:5000", "--workers", "1", "application:app"]
 ```
 
+## 3.7a
+
+Docker swarm using the example frontend/backend app. There's an added _Excercise 3.7a_ for verifying that both hosts are actually used.
+
+Running live at [ec2-52-31-87-208.eu-west-1.compute.amazonaws.com](http://ec2-52-31-87-208.eu-west-1.compute.amazonaws.com/).
+
+Swarm configuration:
+```
+ID                            HOSTNAME            STATUS              AVAILABILITY        MANAGER STATUS      ENGINE VERSION
+lhp0surlqfm07xdu0nb3qdrt9 *   ip-172-31-30-225    Ready               Active              Leader              18.09.0
+t2a5enqmajx19jnlrrqxgun11     ip-172-31-31-32     Ready               Active                                  18.09.0
+```
+
+Frontend service
+```bash
+ubuntu@ip-172-31-30-225:~$ docker service create --name frontend-swarm --replicas 2 -p 5000:5000 -e "API_URL=http://ec2-52-31-87-208.eu-west-1.compute.amazonaws.com/api" ikanher/frontend
+```
+
+Backend service
+```bash
+ubuntu@ip-172-31-30-225:~$ docker service create --name backend-swarm --replicas 2 -p 8000:8000 -e ikanher/backend
+```
+
+Load balancer
+```bash
+ubuntu@ip-172-31-19-82:~/nginx$ docker run --rm --name nginx -p 80:80 -v ~/nginx/nginx.conf:/etc/nginx/nginx.conf:ro -d nginx
+```
+
+Load balancer config
+```
+events { worker_connections 1024; }
+
+http {
+  upstream frontend {
+     server ip-172-31-30-225:5000;
+     server ip-172-31-31-32:5000;
+  }
+
+  upstream backend {
+     server ip-172-31-30-225:8000;
+     server ip-172-31-31-32:8000;
+  }
+
+  server {
+    listen 80;
+
+    location / {
+      proxy_pass http://frontend;
+    }
+
+    location /api/ {
+      proxy_pass http://backend/;
+    }
+  }
+}
+```
